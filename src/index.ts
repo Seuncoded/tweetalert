@@ -1,7 +1,12 @@
+import http from 'http';
+import path from 'path';
 import { config } from './config';
 import { loadState, saveState } from './storage';
 import { createBot, sendTweetAlert } from './bot';
 import { fetchLatestTweets } from './fetcher';
+
+// Resolve data directory relative to this file so it works on Railway's filesystem
+process.env.DATA_FILE = process.env.DATA_FILE || path.join(__dirname, '..', 'data', 'state.json');
 
 async function main(): Promise<void> {
   // 1. Load persisted state
@@ -119,6 +124,18 @@ async function main(): Promise<void> {
 
   process.on('SIGINT', shutdown);
   process.on('SIGTERM', shutdown);
+
+  // ─── HTTP server (required by Railway to bind a port) ────────────────────
+
+  const port = parseInt(process.env.PORT ?? '3000', 10);
+  http
+    .createServer((_req, res) => {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('OK');
+    })
+    .listen(port, () => {
+      console.log(`[http] Listening on port ${port}`);
+    });
 }
 
 function delay(ms: number): Promise<void> {
