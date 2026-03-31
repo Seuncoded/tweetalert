@@ -1,0 +1,23 @@
+{
+  "name": "x-tweet-alerter",
+  "version": "1.0.0",
+  "description": "Telegram bot that monitors X (Twitter) handles and sends alerts for new tweets",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "node-telegram-bot-api": "^0.64.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
